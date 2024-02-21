@@ -87,3 +87,6 @@ Funciona como una tabla de IPs
 Las IPs se registran cada que se crea un pod
 
 kubectl get pods -l app=front
+
+
+PRUEBA DE GIT
