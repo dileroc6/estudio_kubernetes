@@ -1,0 +1,89 @@
+///// POD \\\\\
+Es un wrap de uno o varios contenedores
+
+---Crear un pod---
+Se puede crear a partir de un yaml así: kubectl apply -f -nombre_del_archivo.yml-
+o por comando así: kubectl run podtest --image=nginx:alpine
+
+---Ver lista pods---
+kubectl get pods
+
+---ver un solo pod---
+kubectl get pods -pod_name-
+
+---ver yml de un pod---
+kubectl get pods -pod_name- -o yaml--- MONITOREO 
+
+---ver que sucedio con algo en el tiempo--- MONITOREO
+kubectl describe pod -pod_name- ##Ver seccion eventos
+
+---Ver logs de un pod corriendo--- MONITOREO
+kubectl logs -pod_name- -f
+
+---ver api kubernetes (comandos)---
+kubectl api-resources
+
+---Eliminar un pod---
+kubectl delete pod -pod_name-
+
+---Entrar a un pod---
+kubectl exec -ti mi-pod -- sh
+ 
+ 
+///// LABEL \\\\\
+Metadata que se aplica a un pod para poder distinguirlos
+Funcionan como un tag / llave - valor
+
+
+///// Replica Set \\\\\
+Asegura un numero de pods corriendo
+
+---ver los ReplicaSets actuales desplegados---
+kubectl get rs
+
+---comprobar el estado del replicaset---
+kubectl describe rs/frontend
+
+
+///// Deployment \\\\\
+---Muestra los deployments corriendo---
+kubectl get deployment
+
+---Muestra los deployments corriendo con los labels---
+kubectl get deployment --show-labels
+
+---Muestra loq ue pasa con el deployment---
+kubectl rollout status deployment -deployment_name- --- MONITOREO
+
+---Historial revisiones---
+Un deployment siempre va a mantener hasta 10 replicas con sus versiones
+kubectl rollout history deployment nginx-deployment
+
+---Guarda en la revision el comando que se ejecutó---
+kubectl apply -f dep.yml --record
+Tambien se puede definir en el yaml en la opcion annotations del deployment
+
+---Observar una revision---
+kubectl rollout history deployment nginx-deployment --revision=3
+
+---volver a una revision anterior---
+kubectl rollout undo deployment nginx-deployment --to-revisio=3
+
+
+///// Servicios \\\\\
+Objeto aislado
+Observa pod con cierto label
+Entrega una IP unica y DNS y funciona como balanceador
+---Muestra los servicios expuestos---
+kubectl get svc
+kubectl get svc -l app=front
+
+CLUSTER-IP = Crea IP virtual que sólo es accecible dentro del cluster (comunicacion interna del cluster)
+NODEPORT = Permite exponer servicio fuera del cluster
+
+///// Endpoint \\\\\
+Los crea kubernetes al crear un Servicio
+Funciona como una tabla de IPs
+Las IPs se registran cada que se crea un pod
+
+kubectl get pods -l app=front
